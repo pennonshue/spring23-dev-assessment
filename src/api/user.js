@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import connectDB from "../../server/database/connect.js"
+import connectDB from "../../server/database/utils/connect.js"
 import User from "../../server/database/models/user.js"
 
 // POST to database
@@ -25,7 +25,7 @@ import User from "../../server/database/models/user.js"
                 return res.status(500).send({message: 'Error creating user', error})
             }
         } else {
-            return res.status(400).send({message: 'Otherrr'})
+            return res.status(400).send({message: 'Can only POST at this endpoint'})
         }
 });
 

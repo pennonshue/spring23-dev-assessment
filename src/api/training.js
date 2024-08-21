@@ -1,7 +1,9 @@
 import express from 'express';
 const router = express.Router();
-import connectDB from "../../server/database/connect.js"
+import connectDB from "../../server/database/utils/connect.js"
 import Training from "../../server/database/models/training.js"
+import UserSchema from "../../server/database/models/user.js"
+import AnimalSchema from "../../server/database/models/animal.js"
 
 // POST to database
     router.post('/', async (req, res) => {
@@ -18,6 +20,14 @@ import Training from "../../server/database/models/training.js"
                     user: data.user,
                     trainingLogVideo: data.trainingLogVideo
                 }
+                const user_exists = await UserSchema.findOne({ _id: newTrainingData.user }).lean();
+                const animal_exists =  await AnimalSchema.findOne({ _id: newTrainingData.animal }).lean();
+                if (user_exists === null) {
+                    return res.status(400).send({message: "Can't create training. User does not exist"}) 
+                } else if (animal_exists == null) {
+                    return res.status(400).send({message: "Can't create training. Animal does not exist"}) 
+                }
+
                 const training = new Training(newTrainingData)
                 await training.save()
                 return res.status(200).send({message: "Training Created Successfully!"})
@@ -26,7 +36,7 @@ import Training from "../../server/database/models/training.js"
                 return res.status(500).send({message: 'Error creating training log', error})
             }
         } else {
-            return res.status(400).send({message: 'Otherrr'})
+            return res.status(400).send({message: 'Can only POST at this endpoint'})
         }
 });
 
