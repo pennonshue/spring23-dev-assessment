@@ -1,6 +1,7 @@
 import connectDB from "../../../server/database/utils/connect.js";
 import Train from "../../../server/database/models/training.js"
 import express from 'express';
+import auth_JWT from '../utils/auth.js';
 
 const router = express.Router();
 
@@ -21,7 +22,6 @@ async function pagination(pageNumber) {
         const minId = skip[skip.length-1]._id
 
         // > minID == skipping prev pages
-        // const animals = await Animal.find({_id: { $gt: minId }}).limit(objectsPerPage) 
         const trainings = await Train.find({}).skip(skip).limit(objectsPerPage);
 
 
@@ -30,7 +30,7 @@ async function pagination(pageNumber) {
         console.log(e)
     }
 }
-router.get('/', async (req, res) => {
+router.get('/', auth_JWT, async (req, res) => {
     try {
         await connectDB()
         const pageNumber = req.query.page || 1;

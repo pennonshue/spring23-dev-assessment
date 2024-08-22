@@ -17,9 +17,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    animalArray: {
-        type: [mongoose.Schema.Types.ObjectId]
-    },
     profilePicture: {
         type: String
     }

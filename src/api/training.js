@@ -4,12 +4,13 @@ import connectDB from "../../server/database/utils/connect.js"
 import Training from "../../server/database/models/training.js"
 import UserSchema from "../../server/database/models/user.js"
 import AnimalSchema from "../../server/database/models/animal.js"
+import auth_JWT from '../api/utils/auth.js';
 
 // POST to database
-    router.post('/', async (req, res) => {
+    router.post('/', auth_JWT, async (req, res) => {
         if (req.method === 'POST') {
             const data = req.body;
-
+            const userID = req.user.id
             try {
                 await connectDB()
                 let newTrainingData = {
@@ -17,10 +18,10 @@ import AnimalSchema from "../../server/database/models/animal.js"
                     description: data.description,
                     hours: data.hours,
                     animal: data.animal,
-                    user: data.user,
+                    user: userID,
                     trainingLogVideo: data.trainingLogVideo
                 }
-                const user_exists = await UserSchema.findOne({ _id: newTrainingData.user }).lean();
+                const user_exists = await UserSchema.findOne({ _id: userID }).lean();
                 const animal_exists =  await AnimalSchema.findOne({ _id: newTrainingData.animal }).lean();
                 if (user_exists === null) {
                     return res.status(400).send({message: "Can't create training. User does not exist"}) 

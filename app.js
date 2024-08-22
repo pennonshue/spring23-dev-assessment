@@ -9,6 +9,8 @@ import adminUserRoute from './src/api/admin/users.js';
 import adminAnimalRoute from './src/api/admin/animals.js';
 import adminTrainingRoute from './src/api/admin/training.js';
 import loginRoute from './src/api/utils/login.js';
+import verifyRoute from './src/api/utils/verify.js';
+import auth_JWT from './src/api/utils/auth.js'
 
 dotenv.config();
 const app = express();
@@ -23,14 +25,16 @@ app.get('/', (req, res) => {
 })
 
 // API routes
-app.use('/api/health', healthRoute);
-app.use('/api/user', userRoute);
-app.use('/api/animal', animalRoute);
-app.use('/api/training', trainingRoute);
-app.use('/api/admin/users', adminUserRoute);
-app.use('/api/admin/animals', adminAnimalRoute);
-app.use('/api/admin/training', adminTrainingRoute);
+app.use('/api/health', auth_JWT, healthRoute);
 app.use('/api/user/login', loginRoute);
+app.use('/api/user/verify', verifyRoute);
+app.use('/api/user', auth_JWT, userRoute);
+app.use('/api/animal', auth_JWT, animalRoute);
+app.use('/api/training', auth_JWT, trainingRoute);
+app.use('/api/admin/users', auth_JWT, adminUserRoute);
+app.use('/api/admin/animals', auth_JWT, adminAnimalRoute);
+app.use('/api/admin/training', auth_JWT, adminTrainingRoute);
+
 
 app.listen(APP_PORT, () => {
     console.log(`api listening at http://localhost:${APP_PORT}`)

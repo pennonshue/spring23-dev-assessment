@@ -1,6 +1,7 @@
 import connectDB from "../../../server/database/utils/connect.js";
 import Animal from "../../../server/database/models/animal.js"
 import express from 'express';
+import auth_JWT from '../utils/auth.js';
 
 const router = express.Router();
 
@@ -30,7 +31,8 @@ async function pagination(pageNumber) {
         console.log(e)
     }
 }
-router.get('/', async (req, res) => {
+
+router.get('/', auth_JWT, async (req, res) => {
     try {
         await connectDB()
         const pageNumber = req.query.page || 1;
