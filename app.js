@@ -7,7 +7,8 @@ import animalRoute from './src/api/animal.js';
 import trainingRoute from './src/api/training.js';
 import adminUserRoute from './src/api/admin/users.js';
 import adminAnimalRoute from './src/api/admin/animals.js';
-import adminTrainingRoute from './src/api/admin/training.js'
+import adminTrainingRoute from './src/api/admin/training.js';
+import loginRoute from './src/api/utils/login.js';
 
 dotenv.config();
 const app = express();
@@ -29,6 +30,7 @@ app.use('/api/training', trainingRoute);
 app.use('/api/admin/users', adminUserRoute);
 app.use('/api/admin/animals', adminAnimalRoute);
 app.use('/api/admin/training', adminTrainingRoute);
+app.use('/api/user/login', loginRoute);
 
 app.listen(APP_PORT, () => {
     console.log(`api listening at http://localhost:${APP_PORT}`)

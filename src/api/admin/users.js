@@ -22,8 +22,8 @@ async function pagination(pageNumber) {
 
         // > minID == skipping prev pages
         // const users = await User.find({_id: { $gt: minId }}).limit(objectsPerPage) 
-        const users = await User.find({}).skip(skip).limit(objectsPerPage);
-
+        // const users = await User.find({}).skip(skip).limit(objectsPerPage);
+        const users = await User.find({ _id: { $gt: minId } }, { password: 0 }).limit(objectsPerPage);
 
         return users
     } catch (e) {
